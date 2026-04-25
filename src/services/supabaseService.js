@@ -3352,6 +3352,56 @@ export const dealProductService = {
   },
 };
 
+export const forecastService = {
+  async getForecastSummary({ companyId, scope = null, repId = null } = {}) {
+    try {
+      const { data, error } = await supabase.rpc("forecast_get_summary", {
+        company_id: companyId,
+        scope,
+        rep_id: repId,
+      });
+
+      if (error) throw error;
+      return { data, error: null };
+    } catch (error) {
+      console.error("Error in getForecastSummary:", error);
+      return { data: null, error };
+    }
+  },
+
+  async getKpis({ companyId, scope = null, repId = null } = {}) {
+    try {
+      const { data, error } = await supabase.rpc("forecast_get_kpis", {
+        company_id: companyId,
+        scope,
+        rep_id: repId,
+      });
+
+      if (error) throw error;
+      return { data, error: null };
+    } catch (error) {
+      console.error("Error in getKpis:", error);
+      return { data: null, error };
+    }
+  },
+
+  async getRiskDeals({ companyId, scope = null, repId = null } = {}) {
+    try {
+      const { data, error } = await supabase.rpc("forecast_get_risk_deals", {
+        company_id: companyId,
+        scope,
+        rep_id: repId,
+      });
+
+      if (error) throw error;
+      return { data: data || [], error: null };
+    } catch (error) {
+      console.error("Error in getRiskDeals:", error);
+      return { data: [], error };
+    }
+  },
+};
+
 // ========================================
 // ERROR HANDLING
 // ========================================

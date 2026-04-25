@@ -26,6 +26,9 @@ import Settings from "./pages/settings";
 import AccountSettings from "./pages/AccountSettings";
 import AdminDashboard from "./pages/admin-dashboard";
 import Notifications from "./pages/notifications";
+import MyForecastView from "./pages/forecast/MyForecastView";
+import TeamForecastView from "./pages/forecast/TeamForecastView";
+import ExecutiveForecastView from "./pages/forecast/ExecutiveForecastView";
 
 const Routes = () => {
   return (
@@ -123,6 +126,106 @@ const Routes = () => {
                     </ProtectedRoute>
                   }
                 />
+
+                <Route
+                  path="/my-forecast"
+                  element={
+                    <ProtectedRoute>
+                      <MyForecastView view="forecast" />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/my-pipeline-health"
+                  element={
+                    <ProtectedRoute>
+                      <MyForecastView view="pipeline-health" />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/my-risk-deals"
+                  element={
+                    <ProtectedRoute>
+                      <MyForecastView view="risk-deals" />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/management/team-forecast"
+                  element={
+                    <ProtectedRoute
+                      allowedRoles={["manager", "supervisor", "head", "director", "admin"]}
+                    >
+                      <TeamForecastView view="team-forecast" />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/management/team-pipeline-health"
+                  element={
+                    <ProtectedRoute
+                      allowedRoles={["manager", "supervisor", "head", "director", "admin"]}
+                    >
+                      <TeamForecastView view="team-pipeline-health" />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/management/team-risk-deals"
+                  element={
+                    <ProtectedRoute
+                      allowedRoles={["manager", "supervisor", "head", "director", "admin"]}
+                    >
+                      <TeamForecastView view="team-risk-deals" />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/management/rep-performance"
+                  element={
+                    <ProtectedRoute
+                      allowedRoles={["manager", "supervisor", "head", "director", "admin"]}
+                    >
+                      <TeamForecastView view="rep-performance" />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/executive/company-forecast"
+                  element={
+                    <ProtectedRoute allowedRoles={["director", "admin"]}>
+                      <ExecutiveForecastView view="company-forecast" />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/executive/pipeline-health"
+                  element={
+                    <ProtectedRoute allowedRoles={["director", "admin"]}>
+                      <ExecutiveForecastView view="pipeline-health" />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/executive/forecast-snapshots"
+                  element={
+                    <ProtectedRoute allowedRoles={["director", "admin"]}>
+                      <ExecutiveForecastView view="forecast-snapshots" />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/executive/risk-overview"
+                  element={
+                    <ProtectedRoute allowedRoles={["director", "admin"]}>
+                      <ExecutiveForecastView view="risk-overview" />
+                    </ProtectedRoute>
+                  }
+                />
+
                 <Route path="*" element={<NotFound />} />
               </RouterRoutes>
             </CurrencyProvider>

@@ -7,6 +7,11 @@ import { companyService, notificationService } from "services/supabaseService";
 import { capitalize } from "utils/helper";
 import { useLanguage } from "../../i18n";
 import { useNavigate } from "react-router-dom";
+import {
+  isCompanyRole,
+  isManagerRole,
+  isSalesRepRole,
+} from "permissions/forecastAccess";
 
 const Header = ({
   isCollapsed = false,
@@ -74,8 +79,74 @@ const Header = ({
   // Add user management for admins and managers only
   const adminItems = [];
 
+  const forecastItems = [];
+  const role = userProfile?.role;
+
+  if (isSalesRepRole(role)) {
+    forecastItems.push(
+      { label: "My Forecast", path: "/my-forecast", icon: "TrendingUp" },
+      {
+        label: "My Pipeline Health",
+        path: "/my-pipeline-health",
+        icon: "Activity",
+      },
+      { label: "My Risk Deals", path: "/my-risk-deals", icon: "AlertTriangle" },
+    );
+  }
+
+  if (isManagerRole(role)) {
+    forecastItems.push(
+      {
+        label: "Team Forecast",
+        path: "/management/team-forecast",
+        icon: "TrendingUp",
+      },
+      {
+        label: "Team Pipeline Health",
+        path: "/management/team-pipeline-health",
+        icon: "Activity",
+      },
+      {
+        label: "Team Risk Deals",
+        path: "/management/team-risk-deals",
+        icon: "AlertTriangle",
+      },
+      {
+        label: "Rep Performance",
+        path: "/management/rep-performance",
+        icon: "BarChart3",
+      },
+    );
+  }
+
+  if (isCompanyRole(role)) {
+    forecastItems.push(
+      {
+        label: "Company Forecast",
+        path: "/executive/company-forecast",
+        icon: "TrendingUp",
+      },
+      {
+        label: "Pipeline Health",
+        path: "/executive/pipeline-health",
+        icon: "Activity",
+      },
+      {
+        label: "Risk Overview",
+        path: "/executive/risk-overview",
+        icon: "AlertTriangle",
+      },
+      {
+        label: "Forecast Snapshots",
+        path: "/executive/forecast-snapshots",
+        icon: "Layers",
+      },
+    );
+  }
+
   const secondaryItems = [
     ...adminItems,
+    ...forecastItems,
     { label: t("nav.settings"), path: "/settings", icon: "Settings" },
     { label: t("dashboard.help"), path: "/help", icon: "Info" },
     ...(userProfile?.role === "admin"
