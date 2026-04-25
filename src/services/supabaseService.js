@@ -231,6 +231,58 @@ export const companyService = {
     }
   },
 
+  async createCompany(companyData) {
+    try {
+      const payload = {
+        name: companyData?.name,
+        industry: companyData?.industry || null,
+        city: companyData?.city || null,
+        country: companyData?.country || null,
+        phone: companyData?.phone || null,
+        website: companyData?.website || null,
+        employee_count: Number(companyData?.employee_count || 0),
+        is_active: companyData?.is_active !== false,
+        updated_at: new Date().toISOString(),
+      };
+
+      const { data, error } = await supabase
+        .from("companies")
+        .insert(payload)
+        .select()
+        .single();
+
+      return { data, error };
+    } catch (error) {
+      return { data: null, error };
+    }
+  },
+
+  async updateCompanyDetails(companyId, updates) {
+    try {
+      const payload = {
+        name: updates?.name,
+        industry: updates?.industry || null,
+        city: updates?.city || null,
+        country: updates?.country || null,
+        phone: updates?.phone || null,
+        website: updates?.website || null,
+        employee_count: Number(updates?.employee_count || 0),
+        updated_at: new Date().toISOString(),
+      };
+
+      const { data, error } = await supabase
+        .from("companies")
+        .update(payload)
+        .eq("id", companyId)
+        .select()
+        .single();
+
+      return { data, error };
+    } catch (error) {
+      return { data: null, error };
+    }
+  },
+
   // Get team metrics for specific user IDs
   async getTeamMetrics(companyId, userIds = []) {
     try {
