@@ -1594,7 +1594,7 @@ export const settingsService = {
       const defaultSettings = {
         user_id: userId,
         company_id: userData.company_id,
-        preferred_currency: "USD",
+        preferred_currency: "SAR",
         date_format: "MM/DD/YYYY",
         timezone: "UTC",
         language: "en",
@@ -1689,7 +1689,7 @@ export const currencyService = {
   },
 
   // Format amount with currency (NO conversion, just formatting)
-  format(amount, currencyCode = "USD", showSymbol = true) {
+  format(amount, currencyCode = "SAR", showSymbol = true) {
     const symbol = this.getSymbol(currencyCode);
     const formatted = new Intl.NumberFormat("en-US", {
       minimumFractionDigits: 2,
@@ -1713,7 +1713,7 @@ export const currencyService = {
   },
 
   // Format AND convert in one step
-  formatAndConvert(amount, fromCurrency = "USD", toCurrency = "USD") {
+  formatAndConvert(amount, fromCurrency = "SAR", toCurrency = "SAR") {
     const convertedAmount = this.convert(amount, fromCurrency, toCurrency);
     return this.format(convertedAmount, toCurrency);
   },
@@ -2718,8 +2718,8 @@ export const exchangeService = {
   // Convert currency
   convertCurrency(
     amount,
-    fromCurrency = "USD",
-    toCurrency = "USD",
+    fromCurrency = "SAR",
+    toCurrency = "SAR",
     exchangeRates = {},
   ) {
     if (fromCurrency === toCurrency) return amount;
@@ -2733,7 +2733,7 @@ export const exchangeService = {
   },
 
   // Format currency
-  formatCurrency(amount, currency = "USD") {
+  formatCurrency(amount, currency = "SAR") {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: currency,

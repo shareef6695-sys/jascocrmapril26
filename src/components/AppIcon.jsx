@@ -1,5 +1,5 @@
 import React from "react";
-import { icons } from "lucide-react";
+import * as LucideIcons from "lucide-react";
 
 function Icon({
   name,
@@ -9,14 +9,18 @@ function Icon({
   strokeWidth = 2,
   ...props
 }) {
-  const IconComponent = icons?.[name];
+  const IconComponent = LucideIcons?.[name];
 
   if (!IconComponent) {
-    // Fallback to HelpCircle if icon not found
-    const HelpCircle = icons?.HelpCircle;
-    if (HelpCircle) {
+    const FallbackIcon =
+      LucideIcons?.CircleHelp ||
+      LucideIcons?.HelpCircle ||
+      LucideIcons?.AlertCircle ||
+      null;
+
+    if (FallbackIcon) {
       return (
-        <HelpCircle
+        <FallbackIcon
           size={size}
           color="gray"
           strokeWidth={strokeWidth}

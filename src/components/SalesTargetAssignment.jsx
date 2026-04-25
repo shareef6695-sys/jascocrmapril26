@@ -39,11 +39,11 @@ const SalesTargetAssignment = ({
   const [isUpdateMode, setIsUpdateMode] = useState(false);
 
   const currencies = [
-    { value: "USD", label: "USD ($)" },
+    { value: "SAR", label: "SAR (﷼)" },
     { value: "EUR", label: "EUR (€)" },
     { value: "GBP", label: "GBP (£)" },
-    { value: "CAD", label: "CAD (C$)" },
-    { value: "AUD", label: "AUD (A$)" },
+    { value: "USD", label: "USD ($)" },
+    { value: "AED", label: "AED (د.إ)" },
   ];
 
   const periodTypes = [

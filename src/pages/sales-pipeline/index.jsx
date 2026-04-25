@@ -203,7 +203,7 @@ const SalesPipeline = () => {
           ? `${deal.contact.first_name || ""} ${deal.contact.last_name || ""}`.trim()
           : "",
         deal.amount || 0,
-        deal.currency || "USD",
+        deal.currency || "SAR",
         deal.stage || "",
         deal.owner ? deal.owner.full_name || deal.owner.email : "",
         deal.expected_close_date || "",

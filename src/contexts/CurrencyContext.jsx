@@ -16,7 +16,7 @@ export const CurrencyProvider = ({ children }) => {
   const { user } = useAuth();
   const [preferredCurrency, setPreferredCurrency] = useState(() => {
     // Initialize from localStorage
-    return localStorage.getItem("preferredCurrency") || "USD";
+    return localStorage.getItem("preferredCurrency") || "SAR";
   });
   const [isLoading, setIsLoading] = useState(true);
 
@@ -75,9 +75,9 @@ export const CurrencyProvider = ({ children }) => {
     return currencyService.format(amount, preferredCurrency);
   };
 
-  const convertCurrency = (amount, fromCurrency = "USD", toCurrency = null) => {
+  const convertCurrency = (amount, fromCurrency = "SAR", toCurrency = null) => {
     const targetCurrency = toCurrency || preferredCurrency;
-    const sourceCurrency = fromCurrency || "USD";
+    const sourceCurrency = fromCurrency || "SAR";
     return currencyService.convert(amount, sourceCurrency, targetCurrency);
   };
 

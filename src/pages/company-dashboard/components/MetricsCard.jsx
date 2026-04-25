@@ -7,7 +7,7 @@ const MetricsCard = ({
   change,
   changeType,
   icon,
-  currency = "USD",
+  currency = "SAR",
   isLoading = false,
   trend,
   iconColor,
