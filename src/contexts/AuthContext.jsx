@@ -265,6 +265,39 @@ export const AuthProvider = ({ children }) => {
       });
 
       if (error) throw error;
+
+      const { data: profile, error: profileError } = await supabase
+        .from("users")
+        .select("id, is_active")
+        .eq("id", data?.user?.id)
+        .single();
+
+      if (
+        profileError?.code === "PGRST116" ||
+        profileError?.message?.toLowerCase?.().includes("no rows")
+      ) {
+        await supabase.auth.signOut({ scope: "local" });
+        return {
+          data: null,
+          error: {
+            message:
+              "User profile not found. Please contact your administrator to create your profile.",
+          },
+        };
+      }
+
+      if (profileError) {
+        await supabase.auth.signOut({ scope: "local" });
+        return { data: null, error: profileError };
+      }
+
+      if (profile && profile.is_active === false) {
+        await supabase.auth.signOut({ scope: "local" });
+        return {
+          data: null,
+          error: { message: "Your account is inactive. Please contact an administrator." },
+        };
+      }
       return { data, error: null };
     } catch (error) {
       console.error("Sign in error:", error);

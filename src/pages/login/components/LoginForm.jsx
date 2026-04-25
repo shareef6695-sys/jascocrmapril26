@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Icon from "../../../components/AppIcon";
 import Button from "../../../components/ui/Button";
 import Input from "../../../components/ui/Input";
 import { Checkbox } from "../../../components/ui/Checkbox";
 import { useAuth } from "../../../contexts/AuthContext";
 
-const LoginForm = () => {
-  const navigate = useNavigate();
+const LoginForm = ({ onLogin, isLoading: isLoadingProp }) => {
   const { signIn } = useAuth();
 
   const [formData, setFormData] = useState({
@@ -19,6 +18,8 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [authError, setAuthError] = useState("");
+
+  const effectiveLoading = typeof isLoadingProp === "boolean" ? isLoadingProp : isLoading;
 
   const validateForm = () => {
     const newErrors = {};
@@ -42,12 +43,17 @@ const LoginForm = () => {
     setAuthError("");
 
     if (validateForm()) {
-      setIsLoading(true);
       try {
+        if (typeof onLogin === "function") {
+          await onLogin(formData);
+          return;
+        }
+
+        setIsLoading(true);
         const { error } = await signIn(formData.email, formData.password);
 
         if (error) {
-          setAuthError("Invalid login credentials. Please try again.");
+          setAuthError(error.message || "Invalid login credentials. Please try again.");
           return;
         }
 
@@ -58,9 +64,11 @@ const LoginForm = () => {
           // The login page will read userProfile and redirect accordingly
         }, 100);
       } catch (error) {
-        setAuthError("An unexpected error occurred. Please try again.");
+        setAuthError(error?.message || "An unexpected error occurred. Please try again.");
       } finally {
-        setIsLoading(false);
+        if (typeof onLogin !== "function") {
+          setIsLoading(false);
+        }
       }
     }
   };
@@ -144,7 +152,7 @@ const LoginForm = () => {
         type="submit"
         className="w-full"
         variant="primary"
-        loading={isLoading}
+        loading={effectiveLoading}
       >
         Sign In
       </Button>
