@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }) => {
           profileError.message?.includes("no rows")
         ) {
           console.warn("User profile not found, signing out...");
-          await supabase.auth.signOut();
+          await supabase.auth.signOut({ scope: "local" });
           setUser(null);
           setUserProfile(null);
           setCompany(null);
@@ -83,7 +83,7 @@ export const AuthProvider = ({ children }) => {
 
       if (!profile) {
         console.warn("No profile returned, signing out...");
-        await supabase.auth.signOut();
+        await supabase.auth.signOut({ scope: "local" });
         setUser(null);
         setUserProfile(null);
         setCompany(null);
