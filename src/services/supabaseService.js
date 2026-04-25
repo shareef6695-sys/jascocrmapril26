@@ -3919,7 +3919,26 @@ export const uomService = {
       }
 
       const { data, error } = await query;
-      return { data, error };
+      if (error) return { data: null, error };
+
+      const normalized =
+        data?.map((row) => {
+          const normalizedValue =
+            row?.value ??
+            row?.uom_value ??
+            row?.code ??
+            row?.uom_code ??
+            row?.name ??
+            row?.label ??
+            null;
+
+          const normalizedLabel =
+            row?.label ?? row?.name ?? normalizedValue ?? null;
+
+          return { ...row, value: normalizedValue, label: normalizedLabel };
+        }) ?? [];
+
+      return { data: normalized, error: null };
     } catch (error) {
       return { data: null, error };
     }
@@ -3928,9 +3947,21 @@ export const uomService = {
   // Create UOM type
   async createUomType(uomData) {
     try {
+      if (!uomData || (!uomData?.name && !uomData?.label)) {
+        return {
+          data: null,
+          error: { message: "UOM name is required", code: "VALIDATION_ERROR" },
+        };
+      }
+
+      const payload = {
+        ...uomData,
+        name: uomData?.name ?? uomData?.label ?? uomData?.value ?? null,
+      };
+
       const { data, error } = await supabase
         .from("uom_types")
-        .insert([uomData])
+        .insert([payload])
         .select()
         .single();
 
@@ -3943,9 +3974,16 @@ export const uomService = {
   // Update UOM type
   async updateUomType(id, updates) {
     try {
+      const payload = {
+        ...updates,
+        name:
+          updates?.name ??
+          (updates?.label ? updates.label : undefined),
+      };
+
       const { data, error } = await supabase
         .from("uom_types")
-        .update(updates)
+        .update(payload)
         .eq("id", id)
         .select()
         .single();
