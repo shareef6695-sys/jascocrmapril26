@@ -30,6 +30,7 @@ import {
   Cell,
 } from "recharts";
 import { useNavigate } from "react-router-dom";
+import { exportToCsv, exportToExcel } from "../../../utils/exportUtils";
 
 const EnhancedSalesmanDashboard = () => {
   const { user, userProfile, company } = useAuth();
@@ -978,6 +979,24 @@ const EnhancedSalesmanDashboard = () => {
     }
   };
 
+  const handleExportPipeline = (format) => {
+    const rows = filteredDeals.map((d) => ({
+      Title: d.title || "",
+      Contact: d.contact
+        ? `${d.contact.first_name || ""} ${d.contact.last_name || ""}`.trim()
+        : "",
+      "Contact Company": d.contact?.company_name || "",
+      Stage: d.stage || "",
+      Amount: d.amount || 0,
+      Currency: d.currency || "SAR",
+      "Expected Close": d.expected_close_date || "",
+      "Created Date": d.created_at ? d.created_at.slice(0, 10) : "",
+    }));
+    const filename = `my-pipeline-${new Date().toISOString().slice(0, 10)}`;
+    if (format === "csv") exportToCsv(rows, filename);
+    else exportToExcel([{ name: "My Pipeline", data: rows }], filename);
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -1001,6 +1020,28 @@ const EnhancedSalesmanDashboard = () => {
             <p className="text-gray-600 mt-1">
               Welcome back, {userProfile?.full_name || user?.email}
             </p>
+          </div>
+
+          {/* Pipeline export — staff-only shortcut */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => handleExportPipeline("csv")}
+              disabled={filteredDeals.length === 0}
+              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              title="Export my pipeline to CSV"
+            >
+              <Icon name="FileText" size={15} />
+              CSV
+            </button>
+            <button
+              onClick={() => handleExportPipeline("excel")}
+              disabled={filteredDeals.length === 0}
+              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              title="Export my pipeline to Excel"
+            >
+              <Icon name="Table" size={15} />
+              Excel
+            </button>
           </div>
         </div>
 

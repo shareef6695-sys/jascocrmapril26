@@ -126,19 +126,24 @@ const UserDetailModal = ({ user, onClose, onUpdate }) => {
       icon: "Users",
       label: "Supervisor",
     },
+    staff: {
+      color: "#ef4444",
+      icon: "TrendingUp",
+      label: "Staff",
+    },
     salesman: {
       color: "#ef4444",
       icon: "TrendingUp",
-      label: "Salesman",
+      label: "Staff",
     },
     agent: {
       color: "#64748b",
       icon: "User",
-      label: "Agent",
+      label: "Staff",
     },
   };
 
-  const config = roleConfig[user.role] || roleConfig.agent;
+  const config = roleConfig[user.role] || roleConfig.staff;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">

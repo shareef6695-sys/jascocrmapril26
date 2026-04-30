@@ -73,8 +73,9 @@ const TaskDetailModal = ({
       director: "Director",
       manager: "Manager",
       supervisor: "Supervisor",
-      salesman: "Salesman",
-      sales_rep: "Sales Rep",
+      staff: "Staff",
+      salesman: "Staff",
+      sales_rep: "Staff",
     };
     return roleMap[role] || role;
   };

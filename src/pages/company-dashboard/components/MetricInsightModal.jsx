@@ -29,7 +29,8 @@ const MetricInsightModal = ({
     director: "Director",
     manager: "Manager",
     supervisor: "Supervisor",
-    salesman: "Salesman",
+    staff: "Staff",
+    salesman: "Staff",
   };
 
   // Get owner info from deal

@@ -16,13 +16,14 @@ const RoleBasedDashboard = ({ userRole, ...props }) => {
         return <EnhancedManagerDashboard {...props} />;
       case "supervisor":
         return <EnhancedSupervisorDashboard {...props} />;
-      case "salesman":
+      case "staff":
         return <EnhancedSalesmanDashboard {...props} />;
       case "admin":
         // Admin gets director-level access
         return <DirectorDashboard {...props} />;
       case "agent":
-        // Legacy role - treat as salesman
+      case "salesman":
+        // Legacy roles - treat as staff
         return <EnhancedSalesmanDashboard {...props} />;
       default:
         return <EnhancedSalesmanDashboard {...props} />;

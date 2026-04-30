@@ -145,6 +145,11 @@ const Header = ({
   const secondaryItems = [
     ...adminItems,
     ...forecastItems,
+    // Reports: visible to manager-and-above roles only; staff see their own
+    // export button on the dashboard instead.
+    ...(isManagerRole(role) || isCompanyRole(role)
+      ? [{ label: "Reports", path: "/reports", icon: "BarChart2" }]
+      : []),
     { label: t("nav.settings"), path: "/settings", icon: "Settings" },
     { label: t("dashboard.help"), path: "/help", icon: "Info" },
     ...(userProfile?.role === "admin"

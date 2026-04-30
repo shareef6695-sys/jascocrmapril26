@@ -29,6 +29,7 @@ import Notifications from "./pages/notifications";
 import MyForecastView from "./pages/forecast/MyForecastView";
 import TeamForecastView from "./pages/forecast/TeamForecastView";
 import ExecutiveForecastView from "./pages/forecast/ExecutiveForecastView";
+import ReportsPage from "./pages/reports";
 
 const Routes = () => {
   return (
@@ -222,6 +223,15 @@ const Routes = () => {
                   element={
                     <ProtectedRoute allowedRoles={["director", "admin"]}>
                       <ExecutiveForecastView view="risk-overview" />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/reports"
+                  element={
+                    <ProtectedRoute>
+                      <ReportsPage />
                     </ProtectedRoute>
                   }
                 />

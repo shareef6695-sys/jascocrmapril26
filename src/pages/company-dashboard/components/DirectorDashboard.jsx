@@ -717,8 +717,9 @@ const DirectorDashboard = ({ company: propCompany, onCompanyChange }) => {
             director: 0,
             manager: 1,
             supervisor: 2,
+            staff: 3,
             salesman: 3,
-            agent: 4,
+            agent: 3,
           };
           const filteredEmployees = data
             .filter((emp) => emp.role !== "admin") // Exclude only admin

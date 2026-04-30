@@ -1938,7 +1938,7 @@ export const userService = {
         inactiveUsers,
         adminUsers: roleCounts.admin || 0,
         managerUsers: roleCounts.manager || 0,
-        agentUsers: roleCounts.agent || 0,
+        agentUsers: roleCounts.staff || roleCounts.agent || 0,
       };
 
       return { data: stats, error: null };
