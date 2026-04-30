@@ -18,7 +18,6 @@ const CompanyManagement = () => {
     country: "",
     phone: "",
     website: "",
-    employee_count: 0,
   });
   const [formError, setFormError] = useState("");
 
@@ -89,7 +88,6 @@ const CompanyManagement = () => {
       country: "",
       phone: "",
       website: "",
-      employee_count: 0,
     });
     setFormError("");
     setIsModalOpen(true);
@@ -105,7 +103,6 @@ const CompanyManagement = () => {
       country: company?.country || "",
       phone: company?.phone || "",
       website: company?.website || "",
-      employee_count: company?.employee_count || 0,
     });
     setFormError("");
     setIsModalOpen(true);
@@ -119,7 +116,7 @@ const CompanyManagement = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "employee_count" ? Number(value || 0) : value,
+      [name]: value,
     }));
   };
 
@@ -315,7 +312,7 @@ const CompanyManagement = () => {
                           {company.name}
                         </div>
                         <div className="text-sm text-gray-500">
-                          {company.employee_count || 0} employees
+                          {company.industry || ""}
                         </div>
                       </div>
                     </div>
@@ -510,20 +507,6 @@ const CompanyManagement = () => {
                     onChange={handleFormChange}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
                     placeholder="Website"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Employee Count
-                  </label>
-                  <input
-                    name="employee_count"
-                    type="number"
-                    value={formData.employee_count}
-                    onChange={handleFormChange}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
-                    placeholder="0"
-                    min={0}
                   />
                 </div>
               </div>

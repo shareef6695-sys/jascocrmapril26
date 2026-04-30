@@ -236,7 +236,6 @@ export const companyService = {
         country: companyData?.country || null,
         phone: companyData?.phone || null,
         website: companyData?.website || null,
-        employee_count: Number(companyData?.employee_count || 0),
         is_active: companyData?.is_active !== false,
         updated_at: new Date().toISOString(),
       };
@@ -262,7 +261,6 @@ export const companyService = {
         country: updates?.country || null,
         phone: updates?.phone || null,
         website: updates?.website || null,
-        employee_count: Number(updates?.employee_count || 0),
         updated_at: new Date().toISOString(),
       };
 
