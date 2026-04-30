@@ -32,6 +32,7 @@ const DealModal = ({
     expected_close_date: deal?.expected_close_date || "",
     contact_id: deal?.contact_id || null,
     priority: deal?.priority || "medium",
+    forecast_category: deal?.forecast_category || "best_case",
   });
 
   const [isSaving, setIsSaving] = useState(false);
@@ -85,6 +86,7 @@ const DealModal = ({
         expected_close_date: deal?.expected_close_date || "",
         contact_id: deal?.contact_id || null,
         priority: deal?.priority || "medium",
+        forecast_category: deal?.forecast_category || "best_case",
       });
 
       // Load products for the catalog
@@ -345,6 +347,12 @@ const DealModal = ({
     { value: "high", label: "High" },
   ];
 
+  const forecastCategories = [
+    { value: "commit", label: "Commit" },
+    { value: "best_case", label: "Best Case" },
+    { value: "upside", label: "Upside" },
+  ];
+
   // Convert contacts to dropdown options
   const contactOptions = contacts.map((contact) => ({
     value: contact.id,
@@ -561,8 +569,8 @@ const DealModal = ({
               required
             />
 
-            {/* Stage, Priority, Close Date */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Stage, Priority, Close Date, Forecast Category */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Select
                 label="Stage"
                 options={stages}
@@ -584,6 +592,13 @@ const DealModal = ({
                 onChange={(e) =>
                   handleInputChange("expected_close_date", e?.target?.value)
                 }
+              />
+
+              <Select
+                label="Forecast Category"
+                options={forecastCategories}
+                value={formData?.forecast_category}
+                onChange={(value) => handleInputChange("forecast_category", value)}
               />
             </div>
 

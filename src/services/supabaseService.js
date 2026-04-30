@@ -1119,6 +1119,64 @@ export const dealService = {
       return { data: [], error };
     }
   },
+
+  /**
+   * Fetch the deal rows needed by forecastEngine.buildForecast.
+   *
+   * Pulls a 7-month window (4 months back → 3 months ahead) so the engine
+   * has historical actuals plus near-future pipeline.  Open deals with no
+   * expected_close_date are included via the OR filter so they appear in the
+   * open-pipeline summary even though they won't land in any chart bucket.
+   *
+   * @param {string}      companyId
+   * @param {string|null} userId     - when set, restricts to owner (staff view)
+   * @param {boolean}     viewAll    - when true, ignores userId filter
+   */
+  async getForecastData(companyId, { userId = null, userIds = null, viewAll = false } = {}) {
+    try {
+      if (!companyId) return { data: [], error: null };
+
+      const now = new Date();
+      // 4 months back → 3 months forward
+      const windowStart = new Date(now.getFullYear(), now.getMonth() - 4, 1)
+        .toISOString()
+        .slice(0, 10);
+      const windowEnd = new Date(now.getFullYear(), now.getMonth() + 4, 0)
+        .toISOString()
+        .slice(0, 10);
+
+      let query = supabase
+        .from("deals")
+        .select(
+          "id, title, amount, currency, stage, expected_close_date, closed_at, created_at, owner_id"
+        )
+        .eq("company_id", companyId)
+        .or(
+          [
+            `expected_close_date.gte.${windowStart}`,
+            `expected_close_date.lte.${windowEnd}`,
+            `closed_at.gte.${windowStart}`,
+            `stage.in.(lead,contact_made,proposal_sent,negotiation)`,
+          ].join(",")
+        )
+        .order("expected_close_date", { ascending: true, nullsFirst: false });
+
+      if (!viewAll) {
+        if (userIds && userIds.length > 0) {
+          query = query.in("owner_id", userIds);
+        } else if (userId) {
+          query = query.eq("owner_id", userId);
+        }
+      }
+
+      const { data, error } = await query;
+      if (error) throw error;
+      return { data: data || [], error: null };
+    } catch (error) {
+      console.error("getForecastData error:", error);
+      return { data: [], error };
+    }
+  },
 };
 
 // ========================================

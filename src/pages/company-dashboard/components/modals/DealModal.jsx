@@ -21,6 +21,7 @@ const DealModal = ({ isOpen, onClose, onSubmit }) => {
     expected_close_date: "",
     description: "",
     contact_id: "",
+    forecast_category: "best_case",
   });
 
   const [contacts, setContacts] = useState([]);
@@ -92,6 +93,12 @@ const DealModal = ({ isOpen, onClose, onSubmit }) => {
     { value: "negotiation", label: "Negotiation" },
     { value: "won", label: "Won" },
     { value: "lost", label: "Lost" },
+  ];
+
+  const forecastCategories = [
+    { value: "commit", label: "Commit" },
+    { value: "best_case", label: "Best Case" },
+    { value: "upside", label: "Upside" },
   ];
 
   const handleChange = (eOrValue, maybeName) => {
@@ -265,6 +272,20 @@ const DealModal = ({ isOpen, onClose, onSubmit }) => {
                 value={formData.stage}
                 onChange={(value) => handleChange(value, "stage")}
                 options={stages}
+                required
+                className="mt-1"
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-muted-foreground">
+                Forecast Category
+              </label>
+              <Select
+                name="forecast_category"
+                value={formData.forecast_category}
+                onChange={(value) => handleChange(value, "forecast_category")}
+                options={forecastCategories}
                 required
                 className="mt-1"
               />

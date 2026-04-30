@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import MetricsCard from "./MetricsCard";
 import SalesChart from "./SalesChart";
 import ActivityFeed from "./ActivityFeed";
+import SalesForecast from "./SalesForecast";
 import QuickActions from "./QuickActions";
 import Button from "../../../components/ui/Button";
 import Icon from "../../../components/AppIcon";
@@ -1433,6 +1434,10 @@ const EnhancedSalesmanDashboard = () => {
               showTypeSelector={true}
             />
           </div>
+
+          <SalesForecast
+            targetAmount={targetMetrics?.hasActiveTarget ? targetMetrics.targetAmount : null}
+          />
 
           {/* Upcoming Tasks Card */}
           <div className="bg-white rounded-lg shadow p-6">

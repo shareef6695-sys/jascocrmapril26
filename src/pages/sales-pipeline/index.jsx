@@ -465,6 +465,7 @@ const SalesPipeline = () => {
                     deals={filteredDeals.filter(
                       (deal) => deal.stage === stage.id,
                     )}
+                    allDeals={filteredDeals}
                     onDealUpdate={handleEditDeal}
                     onDealClick={handleEditDeal}
                     onStageUpdate={(stageId) =>

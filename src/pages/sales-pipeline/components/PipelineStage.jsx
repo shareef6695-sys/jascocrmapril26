@@ -12,6 +12,7 @@ const PipelineStage = ({
   onStageUpdate,
   onDragOver,
   onDrop,
+  allDeals = [],
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const { formatCurrency, preferredCurrency } = useCurrency();
@@ -154,6 +155,7 @@ const PipelineStage = ({
                   deal={deal}
                   onDealClick={onDealClick}
                   onDealUpdate={onDealUpdate}
+                  allDeals={allDeals}
                 />
               </div>
             ))

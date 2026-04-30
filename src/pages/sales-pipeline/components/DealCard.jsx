@@ -3,12 +3,17 @@ import Icon from "../../../components/AppIcon";
 import Button from "../../../components/ui/Button";
 import { useCurrency } from "../../../contexts/CurrencyContext";
 import { dealProductService } from "../../../services/supabaseService";
+import { scoreDealRisk, getRiskColor } from "../../../utils/riskScoring";
 
-const DealCard = ({ deal, onDealUpdate, onDealClick }) => {
+const DealCard = ({ deal, onDealUpdate, onDealClick, allDeals = [] }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editAmount, setEditAmount] = useState(deal?.amount);
   const [productCount, setProductCount] = useState(0);
+  const [showRiskTooltip, setShowRiskTooltip] = useState(false);
   const { formatCurrency, preferredCurrency } = useCurrency();
+
+  // Calculate risk score
+  const riskAssessment = scoreDealRisk(deal, allDeals);
 
   // Load product count
   useEffect(() => {
@@ -102,6 +107,35 @@ const DealCard = ({ deal, onDealUpdate, onDealClick }) => {
               : "No contact assigned"}
           </p>
         </div>
+
+        {/* Risk Badge */}
+        {riskAssessment.level !== "low" && (
+          <div className="relative ml-2">
+            <div
+              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold cursor-help ${getRiskColor(riskAssessment.level)}`}
+              onMouseEnter={() => setShowRiskTooltip(true)}
+              onMouseLeave={() => setShowRiskTooltip(false)}
+            >
+              !
+            </div>
+
+            {/* Tooltip */}
+            {showRiskTooltip && (
+              <div className="absolute right-0 top-full mt-1 z-50 bg-gray-900 text-white text-xs rounded-lg px-3 py-2 whitespace-nowrap shadow-lg">
+                <div className="font-semibold mb-1">Risk: {riskAssessment.level}</div>
+                {riskAssessment.flags.length > 0 ? (
+                  <div className="space-y-0.5">
+                    {riskAssessment.flags.map((flag, i) => (
+                      <div key={i}>• {flag}</div>
+                    ))}
+                  </div>
+                ) : (
+                  <div>No risk flags</div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* --- Amount --- */}

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import MetricsCard from "./MetricsCard";
 import SalesChart from "./SalesChart";
 import ActivityFeed from "./ActivityFeed";
+import SalesForecast from "./SalesForecast";
 import TeamPerformance from "./TeamPerformance";
 import Button from "../../../components/ui/Button";
 import Icon from "../../../components/AppIcon";
@@ -2190,6 +2191,10 @@ const EnhancedSupervisorDashboard = ({
               <TeamPerformance data={teamData} />
             </div>
           </div>
+
+          <SalesForecast
+            scopeUserIds={[effectiveUser.id, ...subordinateIds]}
+          />
 
           {/* Activity Feed */}
           <div className="bg-white rounded-lg shadow">
