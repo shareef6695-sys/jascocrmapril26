@@ -61,7 +61,7 @@ const UserTable = ({
   const canEditUser = (user) => {
     // Admins can edit everyone, managers can edit agents only
     if (currentUser.role === "admin") return true;
-    if (currentUser.role === "manager" && user.role === "agent") return true;
+    if (currentUser.role === "manager" && user.role === "staff") return true;
     return false;
   };
 
@@ -69,7 +69,7 @@ const UserTable = ({
     // Can't delete yourself, admins can delete managers and agents, managers can delete agents only
     if (user.id === currentUser.id) return false;
     if (currentUser.role === "admin" && user.role !== "admin") return true;
-    if (currentUser.role === "manager" && user.role === "agent") return true;
+    if (currentUser.role === "manager" && user.role === "staff") return true;
     return false;
   };
 

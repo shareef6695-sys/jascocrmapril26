@@ -12,7 +12,7 @@ const InviteUserModal = ({ onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
-    role: "salesman",
+    role: "staff",
     company_id: null,
     supervisor_id: null,
     creation_method: "password",
@@ -268,7 +268,7 @@ const InviteUserModal = ({ onClose, onSuccess }) => {
                     ? "Select a Director"
                     : formData.role === "supervisor"
                     ? "Select a Manager"
-                    : formData.role === "salesman"
+                    : formData.role === "staff"
                     ? "Select a Supervisor"
                     : "Select a superior"
                 }

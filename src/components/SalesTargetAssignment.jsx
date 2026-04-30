@@ -96,15 +96,14 @@ const SalesTargetAssignment = ({
           // Managers can assign to supervisors and salesmen
           filteredSubordinates =
             data?.filter(
-              (user) => user.role === "supervisor" || user.role === "salesman"
+              (user) => user.role === "supervisor" || user.role === "staff"
             ) || [];
         } else if (userProfile?.role === "supervisor") {
-          // Supervisors can assign to salesmen
+          // Supervisors can assign to staff
           filteredSubordinates =
-            data?.filter((user) => user.role === "salesman") || [];
+            data?.filter((user) => user.role === "staff") || [];
         }
 
-        console.log("✅ Filtered subordinates:", filteredSubordinates);
         setSubordinates(filteredSubordinates);
       } catch (error) {
         console.error("❌ Error loading subordinates:", error);

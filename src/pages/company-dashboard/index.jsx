@@ -5,11 +5,12 @@ import RoleBasedDashboard from "./components/RoleBasedDashboard";
 import { useAuth } from "../../contexts/AuthContext";
 
 const CompanyDashboard = () => {
-  const { company, user, userProfile } = useAuth();
+  const { company, user, userProfile, changeCompany } = useAuth();
   const [selectedCompany, setSelectedCompany] = useState(company);
 
   const handleCompanyChange = (newCompany) => {
     setSelectedCompany(newCompany);
+    changeCompany(newCompany);
   };
 
   // Show loading if user profile is not loaded yet

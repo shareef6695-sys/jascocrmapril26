@@ -20,7 +20,7 @@ const UserStats = ({ users, isLoading }) => {
       inactive: users.filter((user) => !user.is_active).length,
       admins: users.filter((user) => user.role === "admin").length,
       managers: users.filter((user) => user.role === "manager").length,
-      agents: users.filter((user) => user.role === "agent").length,
+      agents: users.filter((user) => user.role === "staff").length,
     };
   };
 

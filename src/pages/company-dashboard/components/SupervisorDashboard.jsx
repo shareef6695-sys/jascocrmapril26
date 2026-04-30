@@ -75,7 +75,7 @@ const SupervisorDashboard = ({ viewAsUser = null, readOnly = false }) => {
 
       // Filter to only salesmen
       const salesmenOnly =
-        salesmenData?.filter((emp) => emp.role === "salesman") || [];
+        salesmenData?.filter((emp) => emp.role === "staff") || [];
       setSalesmen(salesmenOnly);
 
       const salesmanIds = salesmenOnly.map((s) => s.id);

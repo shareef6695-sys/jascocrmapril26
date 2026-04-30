@@ -28,9 +28,8 @@ const PipelineFilters = ({
     showOverdue: false,
   });
 
-  // Check if current user is a salesman (should not see member filter)
-  const isSalesman =
-    userProfile?.role === "salesman" || userProfile?.role === "sales_rep";
+  // Check if current user is staff (should not see member filter)
+  const isSalesman = userProfile?.role === "staff";
 
   // Check if user can see member filter (supervisor, manager, director)
   const canFilterByMember = ["supervisor", "manager", "director"].includes(
@@ -74,17 +73,16 @@ const PipelineFilters = ({
         // Heads see managers
         filteredMembers = data.filter((user) => user.role === "manager");
       } else if (userProfile?.role === "manager") {
-        // Managers see supervisors and salesmen
+        // Managers see supervisors and staff
         filteredMembers = data.filter(
           (user) =>
             user.role === "supervisor" ||
-            user.role === "salesman" ||
-            user.role === "sales_rep",
+            user.role === "staff",
         );
       } else if (userProfile?.role === "supervisor") {
-        // Supervisors see salesmen only
+        // Supervisors see staff only
         filteredMembers = data.filter(
-          (user) => user.role === "salesman" || user.role === "sales_rep",
+          (user) => user.role === "staff",
         );
       }
 

@@ -2209,8 +2209,7 @@ const DirectorDashboard = ({ company: propCompany, onCompanyChange }) => {
               readOnly={true}
             />
           )}
-          {(selectedEmployee.role === "salesman" ||
-            selectedEmployee.role === "agent") && (
+          {selectedEmployee.role === "staff" && (
             <SalesmanDashboard viewAsUser={selectedEmployee} readOnly={true} />
           )}
         </div>

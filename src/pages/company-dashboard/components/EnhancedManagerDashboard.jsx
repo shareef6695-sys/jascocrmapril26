@@ -1409,8 +1409,7 @@ const EnhancedManagerDashboard = ({ viewAsUser = null, readOnly = false }) => {
               filterYear={selectedYear}
             />
           )}
-          {(selectedEmployee.role === "salesman" ||
-            selectedEmployee.role === "agent") && (
+          {selectedEmployee.role === "staff" && (
             <SalesmanDashboard
               viewAsUser={selectedEmployee}
               readOnly={true}

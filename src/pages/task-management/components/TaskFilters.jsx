@@ -51,12 +51,11 @@ const TaskFilters = ({ filters, onFilterChange }) => {
         filteredMembers = data.filter(
           (user) =>
             user.role === "supervisor" ||
-            user.role === "salesman" ||
-            user.role === "sales_rep"
+            user.role === "staff"
         );
       } else if (userProfile?.role === "supervisor") {
         filteredMembers = data.filter(
-          (user) => user.role === "salesman" || user.role === "sales_rep"
+          (user) => user.role === "staff"
         );
       }
 

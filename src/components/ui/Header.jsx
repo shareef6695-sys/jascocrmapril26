@@ -35,8 +35,6 @@ const Header = ({
   const userMenuRef = useRef(null);
   const mobileMenuRef = useRef(null);
 
-  console.log(user);
-
   // Update local state when prop changes
   useEffect(() => {
     if (propSelectedCompany) {

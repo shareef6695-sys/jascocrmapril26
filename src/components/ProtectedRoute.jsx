@@ -1,6 +1,5 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { capitalize } from "../utils/helper";
 
 const Spinner = () => (
   <div className="flex items-center justify-center h-screen">
@@ -37,8 +36,7 @@ export const ProtectedRoute = ({ children, requiredRole, allowedRoles }) => {
             You don't have permission to access this page.
           </p>
           <p className="text-sm text-muted-foreground mt-2">
-            Required role: {requiredRole} | Your role:{" "}
-            {userProfile?.role ? capitalize(userProfile.role) : "Unknown"}
+            Contact your administrator if you believe this is an error.
           </p>
         </div>
       </div>
@@ -58,8 +56,7 @@ export const ProtectedRoute = ({ children, requiredRole, allowedRoles }) => {
             You don't have permission to access this page.
           </p>
           <p className="text-sm text-muted-foreground mt-2">
-            Allowed roles: {allowedRoles.join(", ")} | Your role:{" "}
-            {userProfile?.role ? capitalize(userProfile.role) : "Unknown"}
+            Contact your administrator if you believe this is an error.
           </p>
         </div>
       </div>

@@ -48,7 +48,6 @@ export const authService = {
         data: { user },
         error,
       } = await supabase.auth.getUser();
-      console.log("user", user);
       return { user, error };
     } catch (error) {
       return { user: null, error };
@@ -63,7 +62,6 @@ export const authService = {
 export const companyService = {
   // Get user's company
   async getUserCompany() {
-    console.log("Hello");
     try {
       const { user, error: userError } = await authService.getCurrentUser();
       if (userError || !user) return { data: null, error: userError };
@@ -74,8 +72,6 @@ export const companyService = {
         .eq("id", user.id)
         .single();
 
-      console.log("User", user.id);
-      console.log("Company", data);
       return { data: data?.company, error };
     } catch (error) {
       return { data: null, error };
@@ -1376,7 +1372,6 @@ export const contactService = {
 
   // Get contact statistics
   async getContactStats(companyId) {
-    console.log(companyId);
     try {
       const { data: contacts, error } = await this.getContacts(companyId);
 
@@ -1813,8 +1808,6 @@ export const userService = {
   // Update user
   async updateUser(userId, userData) {
     try {
-      console.log("Updating user:", userId, userData);
-
       // Update user in our database
       const { data, error } = await supabase
         .from("users")
@@ -1856,8 +1849,6 @@ export const userService = {
   // Update user status (activate/deactivate)
   async updateUserStatus(userId, isActive) {
     try {
-      console.log("Updating user status:", userId, isActive);
-
       const { data, error } = await supabase
         .from("users")
         .update({
@@ -1878,8 +1869,6 @@ export const userService = {
   // Delete user
   async deleteUser(userId) {
     try {
-      console.log("Deleting user:", userId);
-
       // First, deactivate the user in our database
       const { error: deactivateError } = await supabase
         .from("users")
@@ -1915,8 +1904,6 @@ export const userService = {
   // Get user statistics
   async getUserStats(companyId) {
     try {
-      console.log("Getting user stats for company:", companyId);
-
       const [totalUsersResult, activeUsersResult, roleStatsResult] =
         await Promise.all([
           // Total users
@@ -1956,7 +1943,6 @@ export const userService = {
         agentUsers: roleCounts.agent || 0,
       };
 
-      console.log("User stats:", stats);
       return { data: stats, error: null };
     } catch (error) {
       console.error("Error getting user stats:", error);
@@ -1971,17 +1957,17 @@ export const userService = {
     }
 
     if (currentUser.role === "manager") {
-      // Managers can only manage agents
-      return targetUser.role === "agent";
+      // Managers can only manage staff
+      return targetUser.role === "staff";
     }
 
-    return false; // Agents cannot manage other users
+    return false; // Staff cannot manage other users
   },
 
   // Get available roles for current user
   getAvailableRoles(currentUserRole) {
     const allRoles = [
-      { value: "agent", label: "Agent" },
+      { value: "staff", label: "Staff" },
       { value: "manager", label: "Manager" },
       { value: "admin", label: "Admin" },
     ];
@@ -1991,7 +1977,7 @@ export const userService = {
     }
 
     if (currentUserRole === "manager") {
-      return allRoles.filter((role) => role.value === "agent"); // Managers can only create agents
+      return allRoles.filter((role) => role.value === "staff"); // Managers can only create staff
     }
 
     return []; // Agents cannot create users
@@ -2000,19 +1986,6 @@ export const userService = {
   // Get user subordinates (recursive hierarchy)
   async getUserSubordinates(userId) {
     try {
-      console.log("getUserSubordinates - Manager ID:", userId);
-
-      // First, let's see what users exist in the table
-      const { data: allUsers, error: allUsersError } = await supabase
-        .from("users")
-        .select(
-          "id, full_name, email, role, is_active, supervisor_id, company_id",
-        )
-        .eq("is_active", true)
-        .limit(10);
-
-      console.log("Sample users in database:", allUsers);
-
       // Use direct query instead of RPC for better reliability
       const { data: directSubordinates, error: directError } = await supabase
         .from("users")
@@ -2023,11 +1996,8 @@ export const userService = {
         .eq("is_active", true);
 
       if (directError) {
-        console.log("Direct subordinates query failed:", directError);
         return { data: [], error: directError };
       }
-
-      console.log("Direct subordinates found:", directSubordinates);
 
       // Also get second level subordinates (subordinates of subordinates)
       if (directSubordinates && directSubordinates.length > 0) {
@@ -2042,7 +2012,6 @@ export const userService = {
             .eq("is_active", true);
 
         if (!secondLevelError && secondLevelSubs) {
-          console.log("Second level subordinates found:", secondLevelSubs);
           const allSubordinates = [...directSubordinates, ...secondLevelSubs];
           return { data: allSubordinates, error: null };
         }
@@ -2050,7 +2019,7 @@ export const userService = {
 
       return { data: directSubordinates || [], error: null };
     } catch (error) {
-      console.log("getUserSubordinates error:", error);
+      console.error("getUserSubordinates error:", error);
       return { data: [], error };
     }
   },
@@ -2790,9 +2759,6 @@ export const salesTargetService = {
         currentUserId = user.id;
       }
 
-      console.log("getMyTargets - Current user ID:", currentUserId);
-      console.log("getMyTargets - Company ID:", companyId);
-
       let query = supabase
         .from("sales_targets")
         .select(
@@ -2810,7 +2776,6 @@ export const salesTargetService = {
       }
 
       const { data, error } = await query;
-      console.log("getMyTargets - Query result:", { data, error });
       return { data: data || [], error };
     } catch (error) {
       console.error("Error fetching my targets:", error);
@@ -2848,8 +2813,6 @@ export const salesTargetService = {
   // Create a new sales target
   async createTarget(targetData) {
     try {
-      console.log("createTarget called with:", targetData);
-
       // Always get current authenticated user - RLS policies require auth.uid() to match assigned_by
       const {
         data: { user },
@@ -2857,45 +2820,13 @@ export const salesTargetService = {
       } = await supabase.auth.getUser();
 
       if (userError || !user) {
-        console.error("Authentication error:", userError);
         throw new Error("User not authenticated");
       }
 
-      console.log("=== AUTHENTICATION DEBUG ===");
-      console.log("Authenticated user ID:", user.id);
-      console.log("Authenticated user email:", user.email);
-      console.log("Requested assignedBy:", targetData.assignedBy);
-
-      // Get user profile to cross-check
-      const { data: profile } = await supabase
-        .from("users")
-        .select("id, full_name, email, role")
-        .eq("id", user.id)
-        .single();
-
-      console.log("User profile from database:", profile);
-
       // Verify the authenticated user matches the intended assigner
       if (targetData.assignedBy && targetData.assignedBy !== user.id) {
-        console.error("=== AUTHENTICATION MISMATCH ===");
-        console.error("Authenticated user:", user.id, user.email);
-        console.error("Requested assignedBy:", targetData.assignedBy);
-
-        // Try to get the requested user's details for debugging
-        const { data: requestedUser } = await supabase
-          .from("users")
-          .select("id, full_name, email, role")
-          .eq("id", targetData.assignedBy)
-          .single();
-
-        console.error("Requested user profile:", requestedUser);
-
         throw new Error(
-          `Authentication mismatch: You are logged in as ${user.email} (${
-            user.id
-          }) but trying to assign as ${requestedUser?.email || "unknown"} (${
-            targetData.assignedBy
-          })`,
+          `Authentication mismatch: cannot assign as a different user`,
         );
       }
 
@@ -2913,8 +2844,6 @@ export const salesTargetService = {
         progress_amount: 0,
       };
 
-      console.log("Inserting sales target:", insertData);
-
       const { data, error } = await supabase
         .from("sales_targets")
         .insert([insertData])
@@ -2929,11 +2858,8 @@ export const salesTargetService = {
 
       if (error) {
         console.error("Database error creating target:", error);
-        console.error("Error details:", JSON.stringify(error, null, 2));
         return { data: null, error };
       }
-
-      console.log("Target created successfully:", data);
 
       // Create notification for the assignee
       try {
@@ -3308,18 +3234,6 @@ export const dealProductService = {
     uomValue = null,
   ) {
     try {
-      console.log("💾 dealProductService.addProductToDeal called with:", {
-        dealId,
-        productId,
-        quantity,
-        sqm,
-        ton,
-        unitPrice,
-        notes,
-        uomType,
-        uomValue,
-      });
-
       const { data, error } = await supabase
         .from("deal_products")
         .insert({
@@ -3334,8 +3248,6 @@ export const dealProductService = {
           uom_value: uomValue,
         })
         .select("*, product:products!product_id(*)");
-
-      console.log("💾 addProductToDeal result:", { data, error });
 
       if (error) throw error;
       return { data: data?.[0] || null, error: null };
@@ -3525,11 +3437,6 @@ export const adminService = {
         return { data: null, error: { message: data.error } };
       }
 
-      console.log("📧 User Invitation Created:");
-      console.log("Email:", email);
-      console.log("Invitation URL:", data.invitation_url);
-      console.log("Email sent:", data.email_sent);
-
       return {
         data: {
           ...data,
@@ -3633,7 +3540,6 @@ export const adminService = {
             : null,
       }));
 
-      console.log("getAllUsers result:", enrichedData);
       return { data: enrichedData, error: null };
     } catch (error) {
       return { data: null, error };
@@ -3679,8 +3585,6 @@ export const adminService = {
               }
             : null,
       }));
-
-      console.log("getUserHierarchy result:", enrichedData);
 
       // Build hierarchy tree
       const buildTree = (users) => {

@@ -9,7 +9,7 @@ const UserModal = ({ isOpen, onClose, onSave, user, mode, currentUser }) => {
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
-    role: "agent",
+    role: "staff",
     is_active: true,
     send_invitation: true,
   });
@@ -23,7 +23,7 @@ const UserModal = ({ isOpen, onClose, onSave, user, mode, currentUser }) => {
         setFormData({
           full_name: "",
           email: "",
-          role: "agent",
+          role: "staff",
           is_active: true,
           send_invitation: true,
         });
@@ -31,7 +31,7 @@ const UserModal = ({ isOpen, onClose, onSave, user, mode, currentUser }) => {
         setFormData({
           full_name: user.full_name || "",
           email: user.email || "",
-          role: user.role || "agent",
+          role: user.role || "staff",
           is_active: user.is_active || false,
           send_invitation: false,
         });

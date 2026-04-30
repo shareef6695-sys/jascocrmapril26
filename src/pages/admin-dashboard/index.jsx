@@ -21,9 +21,7 @@ const AdminDashboard = () => {
   ];
 
   const handleLogout = async () => {
-    if (confirm("Are you sure you want to log out?")) {
-      await signOut();
-    }
+    await signOut();
   };
 
   return (

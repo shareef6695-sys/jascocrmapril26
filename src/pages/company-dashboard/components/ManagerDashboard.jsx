@@ -930,8 +930,7 @@ const ManagerDashboard = ({ viewAsUser = null, readOnly = false }) => {
               readOnly={true}
             />
           )}
-          {(selectedEmployee.role === "salesman" ||
-            selectedEmployee.role === "agent") && (
+          {selectedEmployee.role === "staff" && (
             <SalesmanDashboard viewAsUser={selectedEmployee} readOnly={true} />
           )}
         </div>

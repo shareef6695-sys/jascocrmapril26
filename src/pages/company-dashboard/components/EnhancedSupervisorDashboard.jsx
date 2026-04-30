@@ -721,21 +721,10 @@ const EnhancedSupervisorDashboard = ({
       const subIds = subordinatesData?.map((s) => s.id) || [];
       setSubordinateIds(subIds);
 
-      console.log("📋 Subordinate IDs:", subIds);
-
-      // For supervisors, only salesmen can be assigned targets
+      // For supervisors, only staff can be assigned targets
       const salesmenOnly =
-        subordinatesData?.filter((sub) => sub.role === "salesman") || [];
+        subordinatesData?.filter((sub) => sub.role === "staff") || [];
       setSubordinates(salesmenOnly);
-
-      console.log(
-        "👤 Salesmen only:",
-        salesmenOnly.map((s) => ({
-          id: s.id,
-          name: s.full_name,
-          email: s.email,
-        })),
-      );
 
       // Get all team user IDs (supervisor + all subordinates)
       const allSubordinateIds = subordinatesData?.map((s) => s.id) || [];

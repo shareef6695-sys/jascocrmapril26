@@ -1,5 +1,5 @@
 export const isSalesRepRole = (role) =>
-  ["salesman", "sales_rep", "agent"].includes(role);
+  ["staff"].includes(role);
 
 export const isManagerRole = (role) =>
   ["manager", "supervisor", "head"].includes(role);

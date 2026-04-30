@@ -152,7 +152,7 @@ const SupervisorSalesTargetAssignment = ({
         if (error) throw error;
 
         // Supervisors can only assign to salesmen
-        const filtered = data?.filter((user) => user.role === "salesman") || [];
+        const filtered = data?.filter((user) => user.role === "staff") || [];
         setSalesmen(filtered);
       } catch (error) {
         console.error("Error loading salesmen:", error);

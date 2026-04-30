@@ -107,13 +107,12 @@ const TaskDetailModal = ({
           filteredSubordinates = data.filter(
             (u) =>
               u.role === "supervisor" ||
-              u.role === "salesman" ||
-              u.role === "sales_rep"
+              u.role === "staff"
           );
         } else if (userProfile.role === "supervisor") {
           // Supervisors can assign to salesmen
           filteredSubordinates = data.filter(
-            (u) => u.role === "salesman" || u.role === "sales_rep"
+            (u) => u.role === "staff"
           );
         }
 

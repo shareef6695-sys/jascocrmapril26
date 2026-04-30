@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import { settingsService } from "../services/supabaseService";
@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
   const [userProfile, setUserProfile] = useState(null);
   const [company, setCompany] = useState(null);
   const [loading, setLoading] = useState(true);
+  const userProfileRef = useRef(null);
 
   // Load user profile and currency settings
   const loadUserProfile = async (userId, retryCount = 0) => {
@@ -92,6 +93,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       setUserProfile(profile);
+      userProfileRef.current = profile;
 
       // For admin and director roles, they can work across all companies
       // For other roles, they must have a company assigned
@@ -239,6 +241,7 @@ export const AuthProvider = ({ children }) => {
       if (event === "SIGNED_OUT") {
         setUser(null);
         setUserProfile(null);
+        userProfileRef.current = null;
         setCompany(null);
         setLoading(false);
         return;
@@ -247,8 +250,8 @@ export const AuthProvider = ({ children }) => {
       // For SIGNED_IN, load the profile
       if (event === "SIGNED_IN" && session?.user) {
         setUser(session.user);
-        // Only load profile if we don't already have one for this user
-        if (!userProfile || userProfile.id !== session.user.id) {
+        // Use ref to avoid stale closure — check if profile already loaded for this user
+        if (!userProfileRef.current || userProfileRef.current.id !== session.user.id) {
           loadUserProfile(session.user.id);
         }
       }

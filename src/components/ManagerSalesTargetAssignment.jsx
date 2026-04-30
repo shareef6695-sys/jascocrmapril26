@@ -157,7 +157,7 @@ const ManagerSalesTargetAssignment = ({
           filtered = data?.filter((user) => user.role === "manager") || [];
         } else if (userProfile.role === "manager") {
           filtered = data?.filter(
-            (user) => user.role === "supervisor" || user.role === "salesman"
+            (user) => user.role === "supervisor" || user.role === "staff"
           ) || [];
         }
         setSubordinates(filtered);

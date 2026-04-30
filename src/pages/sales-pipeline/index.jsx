@@ -15,7 +15,6 @@ import {
   userService,
   activityService,
 } from "../../services/supabaseService";
-import { now } from "d3";
 import { formatLocalDateYMD } from "utils/dateFormat";
 import { resolveDateRange } from "../../components/ui/DateRangePicker";
 
@@ -74,7 +73,7 @@ const SalesPipeline = () => {
 
       if (error) throw error;
       setDeals(data || []);
-      setLastFetchTime(now());
+      setLastFetchTime(Date.now());
     } catch (error) {
       console.error("Error loading deals:", error);
     } finally {
