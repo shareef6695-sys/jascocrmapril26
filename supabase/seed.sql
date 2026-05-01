@@ -28,51 +28,69 @@
 -- STEP 1 · AUTH USERS
 -- ─────────────────────────────────────────────────────────────────────────────
 INSERT INTO auth.users (
-  id, aud, role, email, encrypted_password,
-  email_confirmed_at, raw_app_meta_data, raw_user_meta_data,
-  created_at, updated_at, is_sso_user
+  instance_id, id, aud, role,
+  email, encrypted_password,
+  email_confirmed_at,
+  confirmation_token, recovery_token,
+  email_change_token_new, email_change,
+  phone_change, phone_change_token,
+  email_change_token_current, email_change_confirm_status,
+  raw_app_meta_data, raw_user_meta_data,
+  is_super_admin, created_at, updated_at, is_sso_user
 ) VALUES
   (
+    '00000000-0000-0000-0000-000000000000',
     'u0000000-0000-0000-0000-000000000001', 'authenticated', 'authenticated',
     'mmshareef@aljazera.com',
     crypt('Demo@2026!', gen_salt('bf')),
-    now(), '{"provider":"email","providers":["email"]}', '{"full_name":"MM Shareef"}',
-    now(), now(), false
+    now(), '', '', '', '', '', '', '', 0,
+    '{"provider":"email","providers":["email"]}', '{"full_name":"MM Shareef"}',
+    false, now(), now(), false
   ),
   (
+    '00000000-0000-0000-0000-000000000000',
     'u0000000-0000-0000-0000-000000000002', 'authenticated', 'authenticated',
     'nader@ajazera.com',
     crypt('Demo@2026!', gen_salt('bf')),
-    now(), '{"provider":"email","providers":["email"]}', '{"full_name":"Nader"}',
-    now(), now(), false
+    now(), '', '', '', '', '', '', '', 0,
+    '{"provider":"email","providers":["email"]}', '{"full_name":"Nader"}',
+    false, now(), now(), false
   ),
   (
+    '00000000-0000-0000-0000-000000000000',
     'u0000000-0000-0000-0000-000000000003', 'authenticated', 'authenticated',
     'm.kamal@jascopvc.com',
     crypt('Demo@2026!', gen_salt('bf')),
-    now(), '{"provider":"email","providers":["email"]}', '{"full_name":"Mohamed Kamal"}',
-    now(), now(), false
+    now(), '', '', '', '', '', '', '', 0,
+    '{"provider":"email","providers":["email"]}', '{"full_name":"Mohamed Kamal"}',
+    false, now(), now(), false
   ),
   (
+    '00000000-0000-0000-0000-000000000000',
     'u0000000-0000-0000-0000-000000000004', 'authenticated', 'authenticated',
     'osman@jascopvc.com',
     crypt('Demo@2026!', gen_salt('bf')),
-    now(), '{"provider":"email","providers":["email"]}', '{"full_name":"Osman"}',
-    now(), now(), false
+    now(), '', '', '', '', '', '', '', 0,
+    '{"provider":"email","providers":["email"]}', '{"full_name":"Osman"}',
+    false, now(), now(), false
   ),
   (
+    '00000000-0000-0000-0000-000000000000',
     'u0000000-0000-0000-0000-000000000005', 'authenticated', 'authenticated',
     'amer@jascopvc.com',
     crypt('Demo@2026!', gen_salt('bf')),
-    now(), '{"provider":"email","providers":["email"]}', '{"full_name":"Amer"}',
-    now(), now(), false
+    now(), '', '', '', '', '', '', '', 0,
+    '{"provider":"email","providers":["email"]}', '{"full_name":"Amer"}',
+    false, now(), now(), false
   ),
   (
+    '00000000-0000-0000-0000-000000000000',
     'u0000000-0000-0000-0000-000000000006', 'authenticated', 'authenticated',
     'hazem@jascopvc.com',
     crypt('Demo@2026!', gen_salt('bf')),
-    now(), '{"provider":"email","providers":["email"]}', '{"full_name":"Hazem"}',
-    now(), now(), false
+    now(), '', '', '', '', '', '', '', 0,
+    '{"provider":"email","providers":["email"]}', '{"full_name":"Hazem"}',
+    false, now(), now(), false
   )
 ON CONFLICT (id) DO NOTHING;
 
