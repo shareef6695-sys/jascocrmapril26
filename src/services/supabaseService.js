@@ -1859,12 +1859,17 @@ export const userService = {
 
       if (error) {
         // Extract the actual error message from the function response body
+        console.error('Edge Function error:', error);
         try {
           const body = await error.context?.json?.();
+          console.error('Edge Function error body:', body);
           const message = body?.error || body?.message || error.message;
           return { data: null, error: { message } };
-        } catch {
-          return { data: null, error };
+        } catch (e) {
+          console.error('Error parsing error body:', e);
+          console.error('Error.message:', error?.message);
+          console.error('Error.context:', error?.context);
+          return { data: null, error: { message: error?.message || 'Edge Function error' } };
         }
       }
       if (data?.error) return { data: null, error: { message: data.error } };
