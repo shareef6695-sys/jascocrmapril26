@@ -1841,18 +1841,32 @@ export const userService = {
   // Create new user with Supabase Auth invitation
   async createUser(userData, sendInvitation = true) {
     try {
+      const full_name =
+        userData.full_name ||
+        [userData.first_name, userData.last_name].filter(Boolean).join(" ") ||
+        null;
+
       const { data, error } = await supabase.functions.invoke("admin-auth", {
         body: {
-          action: sendInvitation ? "generate_invite_link" : "generate_invite_link",
+          action: "generate_invite_link",
           email: userData.email,
-          full_name: userData.full_name,
+          full_name,
           role: userData.role,
           company_id: userData.company_id,
           supervisor_id: userData.supervisor_id || null,
         },
       });
 
-      if (error) return { data: null, error };
+      if (error) {
+        // Extract the actual error message from the function response body
+        try {
+          const body = await error.context?.json?.();
+          const message = body?.error || body?.message || error.message;
+          return { data: null, error: { message } };
+        } catch {
+          return { data: null, error };
+        }
+      }
       if (data?.error) return { data: null, error: { message: data.error } };
 
       return { data, error: null };

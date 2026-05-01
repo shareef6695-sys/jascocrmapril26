@@ -74,7 +74,8 @@ const UserManagement = () => {
       alert('User created successfully');
     } catch (error) {
       console.error('Error creating user:', error);
-      alert('Failed to create user');
+      const errorMessage = error?.message || error?.error?.message || 'Failed to create user';
+      alert(`Failed to create user: ${errorMessage}`);
     }
   };
 
