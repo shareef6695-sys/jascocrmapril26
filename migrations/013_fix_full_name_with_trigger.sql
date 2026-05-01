@@ -1,5 +1,5 @@
 -- Drop the problematic generated column if it exists
-alter table public.users drop column if not exists full_name;
+alter table public.users drop column if exists full_name;
 
 -- Add full_name as a regular column
 alter table public.users
